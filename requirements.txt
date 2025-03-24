@@ -5,4 +5,6 @@ numpy
 scikit-learn
 matplotlib
 ipykernel
--e .
+dill
+xgboost
+#-e .
