@@ -12,6 +12,9 @@ from src.pipeline.training import Train
 from src.logger import logging
 from src.exception import CustomException
 
+import warnings
+warnings.filterwarnings('ignore')
+
 class Main():
     def __init__(self):
         self.data_frame = DataFrame()
@@ -29,7 +32,7 @@ class Main():
             X_train, X_test, y_train, y_test = self.data_preprocessing.initiate_create_split_scaled_dataset(data_set, 0.70) 
 
             #train
-            epoch = 500
+            epoch = 4000
             result = self.training.fit(X_train, X_test, y_train, y_test, epoch)
 
             return result

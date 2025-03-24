@@ -65,9 +65,9 @@ class DataProcessing():
             train_size = int(len(data) * train_rate)
             #test_size = len(data) - train_size
             train, test = data[:train_size], data[train_size:]
-            #train_scaled, test_scaled = self.initiate_data_scaler(train, test)
-            X_train, y_train = self.initiate_dataset(train, lookback)
-            X_test, y_test = self.initiate_dataset(test, lookback)
+            train_scaled, test_scaled = self.initiate_data_scaler(train, test)
+            X_train, y_train = self.initiate_dataset(train_scaled, lookback)
+            X_test, y_test = self.initiate_dataset(test_scaled, lookback)
 
             return X_train, X_test, y_train, y_test
 
@@ -78,8 +78,8 @@ class DataProcessing():
 if __name__ == '__main__':
     obj = DataProcessing()
     df = pd.read_csv('/home/server-iss-mbkm/project/docker/LSTM/artifacts/dataset.csv')
-    data = df['Pods'].values.astype('float32')
+    data = df[['Pods']].values.astype('float32')
     X_train, X_test, y_train, y_test = obj.initiate_create_split_scaled_dataset(data, 0.70)
-    print(X_train.shape)
-    print(X_test.shape)
+    print(X_train)
+    print(X_test)
 

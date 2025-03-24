@@ -72,7 +72,7 @@ class Train():
                optim_fn = optim.Adam(model_fn.parameters())
                loss_fn = nn.MSELoss()
           
-               train_dataloader = data.DataLoader(data.TensorDataset(X_train, y_train), shuffle=True, batch_size=8)
+               dataloader = data.DataLoader(data.TensorDataset(X_train, y_train), shuffle=True, batch_size=8)
           
                loss_train = []
                loss_test = []
@@ -82,7 +82,7 @@ class Train():
     
                #train model
                     model_fn.train()
-                    for X_batch, y_batch in train_dataloader:
+                    for X_batch, y_batch in dataloader:
                          y_pred = model_fn(X_batch)
                          loss = loss_fn(y_pred, y_batch)
                          optim_fn.zero_grad()
@@ -96,15 +96,15 @@ class Train():
                     with torch.no_grad():
                          #train loss
                          y_train_pred = model_fn(X_train)
-                         #y_pred_train_rescaled = self.training_config.data_scaler.inverse_transform(y_train_pred.reshape(-1, 1))
-                         #y_train_rescaled = self.training_config.data_scaler.inverse_transform(y_train.reshape(-1, 1))
-                         train_rmse = np.sqrt(loss_fn(y_train_pred, y_train))
+                         y_train_pred_rescaled = self.training_config.data_scaler.inverse_transform(y_train_pred.reshape(-1, 1))
+                         y_train_rescaled = self.training_config.data_scaler.inverse_transform(y_train.reshape(-1, 1))
+                         train_rmse = np.sqrt(mean_squared_error(y_train_pred_rescaled, y_train_rescaled))
                          loss_train.append(train_rmse)
                          #test loss
                          y_test_pred = model_fn(X_test)
-                         #y_pred_test_rescaled = self.training_config.data_scaler.inverse_transform(y_test_pred.reshape(-1, 1))
-                         #y_test_rescaled = self.training_config.data_scaler.inverse_transform(y_test.reshape(-1, 1))
-                         test_rmse = np.sqrt(loss_fn(y_test_pred, y_test))
+                         y_test_pred_rescaled = self.training_config.data_scaler.inverse_transform(y_test_pred.reshape(-1, 1))
+                         y_test_rescaled = self.training_config.data_scaler.inverse_transform(y_test.reshape(-1, 1))
+                         test_rmse = np.sqrt(mean_squared_error(y_test_pred_rescaled, y_test_rescaled))
                          loss_test.append(test_rmse)
                     print("Epoch %d: train RMSE %.4f, test RMSE %.4f" % (epoch, train_rmse, test_rmse))
                

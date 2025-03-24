@@ -7,6 +7,6 @@ class LSTM(nn.Module):
         self.linear = nn.Linear(hidden_dim, output_dim)
     def forward(self, x):
         x, _ = self.lstm(x)
-        x = x[:, -1, :]
+        #x = x[:, -1, :]
         x = self.linear(x)
         return x
